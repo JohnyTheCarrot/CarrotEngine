@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+.idea
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -31,6 +32,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+cmake-build-*
+build
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -396,8 +399,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-
-!3rdParty/**/*
 
 #cmake output
 build
