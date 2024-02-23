@@ -1,35 +1,37 @@
 #pragma once
 
-#include <string>
-#include <memory>
 #include "Transform.h"
+#include <memory>
+#include <string>
 
 namespace dae {
-    class Texture2D;
+	class Texture2D;
 
-    class GameObject {
-        std::shared_ptr<Texture2D> m_Texture{};
-    protected:
-        Transform m_Transform{};
-    public:
-        virtual void Update();
+	class GameObject {
+		std::shared_ptr<Texture2D> m_Texture{};
 
-        virtual void Render() const;
+	protected:
+		Transform m_Transform{};
 
-        void SetTexture(const std::string &filename);
+	public:
+		virtual void Update();
 
-        void SetPosition(float x, float y);
+		virtual void Render() const;
 
-        GameObject() = default;
+		void SetTexture(const std::string &filename);
 
-        virtual ~GameObject();
+		void SetPosition(float x, float y);
 
-        GameObject(const GameObject &other) = delete;
+		GameObject() = default;
 
-        GameObject(GameObject &&other) = delete;
+		virtual ~GameObject();
 
-        GameObject &operator=(const GameObject &other) = delete;
+		GameObject(const GameObject &other) = delete;
 
-        GameObject &operator=(GameObject &&other) = delete;
-    };
-}
+		GameObject(GameObject &&other) = delete;
+
+		GameObject &operator=(const GameObject &other) = delete;
+
+		GameObject &operator=(GameObject &&other) = delete;
+	};
+}// namespace dae
