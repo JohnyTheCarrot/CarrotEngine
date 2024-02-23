@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FONT_H
+#define FONT_H
 
 #include <string>
 
@@ -29,3 +30,5 @@ namespace dae {
 		_TTF_Font *m_Font;
 	};
 }// namespace dae
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SCENE_H
+#define SCENE_H
 
 #include "SceneManager.h"
 
@@ -39,3 +40,5 @@ namespace dae {
 	};
 
 }// namespace dae
+
+#endif

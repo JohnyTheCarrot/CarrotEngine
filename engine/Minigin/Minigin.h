@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MINIGIN_H
+#define MINIGIN_H
 
 #include <filesystem>
 #include <functional>
@@ -26,3 +27,5 @@ namespace dae {
 		Minigin &operator=(Minigin &&other) = delete;
 	};
 }// namespace dae
+
+#endif

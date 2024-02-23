@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXT_OBJECT_H
+#define TEXT_OBJECT_H
 
 #include "GameObject.h"
 #include "Transform.h"
@@ -39,3 +40,5 @@ namespace dae {
 		std::shared_ptr<Texture2D> m_TextTexture;
 	};
 }// namespace dae
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RESOURCE_MANAGER_H
+#define RESOURCE_MANAGER_H
 
 #include "Singleton.h"
 #include <filesystem>
@@ -28,3 +29,5 @@ namespace dae {
 		std::filesystem::path m_dataPath;
 	};
 }// namespace dae
+
+#endif

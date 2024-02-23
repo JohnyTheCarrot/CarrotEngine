@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GAME_OBJECT_H
+#define GAME_OBJECT_H
 
 #include "Transform.h"
 #include <memory>
@@ -35,3 +36,5 @@ namespace dae {
 		GameObject &operator=(GameObject &&other) = delete;
 	};
 }// namespace dae
+
+#endif
