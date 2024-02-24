@@ -11,13 +11,11 @@ Scene::Scene(const std::string &name)
     : m_Name(name) {
 }
 
-Scene::~Scene() = default;
-
 void Scene::Add(std::shared_ptr<GameObject> object) {
 	m_Objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(std::shared_ptr<GameObject> object) {
+void Scene::Remove(const std::shared_ptr<GameObject> &object) {
 	m_Objects.erase(std::remove(m_Objects.begin(), m_Objects.end(), object), m_Objects.end());
 }
 
