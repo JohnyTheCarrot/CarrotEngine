@@ -16,17 +16,17 @@ namespace dae {
 		void Init(const std::filesystem::path &data);
 
 		[[nodiscard]]
-		std::shared_ptr<Texture2D> LoadTexture(const std::string &file) const;
+		std::shared_ptr<Texture2D> LoadTexture(std::string_view fileName) const;
 
 		[[nodiscard]]
-		std::shared_ptr<Font> LoadFont(const std::string &file, unsigned int size) const;
+		std::shared_ptr<Font> LoadFont(std::string_view fileName, unsigned int size) const;
 
 	private:
 		friend class Singleton<ResourceManager>;
 
 		ResourceManager() = default;
 
-		std::filesystem::path m_dataPath;
+		std::filesystem::path m_DataPath;
 	};
 }// namespace dae
 

@@ -19,7 +19,7 @@ namespace dae {
 
 		virtual void Render() const;
 
-		void SetTexture(const std::string &filename);
+		void SetTexture(std::string_view filename);
 
 		void SetPosition(float x, float y);
 
