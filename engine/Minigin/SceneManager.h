@@ -16,6 +16,8 @@ namespace dae {
 
 		void Update();
 
+		void FixedUpdate();
+
 		void Render();
 
 	private:

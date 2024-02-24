@@ -27,6 +27,9 @@ void Scene::Update() {
 	for (auto &object: m_Objects) { object->Update(); }
 }
 
+void Scene::FixedUpdate() {
+}
+
 void Scene::Render() const {
 	for (const auto &object: m_Objects) { object->Render(); }
 }

@@ -18,6 +18,8 @@ namespace dae {
 
 		void Update();
 
+		void FixedUpdate();
+
 		void Render() const;
 
 		Scene(const Scene &other) = delete;
