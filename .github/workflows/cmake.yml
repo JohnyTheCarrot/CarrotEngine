@@ -3,9 +3,9 @@ name: CMake
 on:
   workflow_dispatch:
   push:
-    branches: [ "feature/cmake" ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ "feature/cmake" ]
+    branches: [ "**" ]
 
 jobs:
   build:
@@ -15,20 +15,20 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        BUILD_TYPE: [Release, Debug]
+        BUILD_TYPE: [ Release, Debug ]
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}}
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.BUILD_TYPE}}
 
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{matrix.BUILD_TYPE}}
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.BUILD_TYPE}}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{matrix.BUILD_TYPE}}
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        # Execute tests defined by the CMake configuration.
+        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+        run: ctest -C ${{matrix.BUILD_TYPE}}
 
