@@ -1,18 +1,20 @@
 #ifndef SCENE_MANAGER_H
 #define SCENE_MANAGER_H
 
-
+#include "Scene.h"
 #include "Singleton.h"
+#include "Util/PointerAliases.h"
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace dae {
-	class Scene;
-
 	class SceneManager final : public Singleton<SceneManager> {
 	public:
-		Scene &CreateScene(const std::string &name);
+		template<std::convertible_to<std::string> TStr>
+		Scene &CreateScene(TStr &&name) {
+			return m_Scenes.emplace_back(std::forward<TStr>(name));
+		}
 
 		void Update();
 
@@ -25,7 +27,7 @@ namespace dae {
 
 		SceneManager() = default;
 
-		std::vector<std::shared_ptr<Scene>> m_Scenes;
+		std::vector<Scene> m_Scenes;
 	};
 }// namespace dae
 

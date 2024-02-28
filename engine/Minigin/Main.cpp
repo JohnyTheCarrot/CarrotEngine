@@ -7,32 +7,35 @@
 #endif
 #endif
 
+#include "Components/CounterComponent.h"
+#include "Components/TextComponent.h"
+#include "Components/TextureComponent.h"
 #include "Minigin.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneManager.h"
-#include "TextObject.h"
 
 #include <filesystem>
 
 namespace fs = std::filesystem;
+using namespace dae;
 
 void load() {
-	auto &scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto font{ResourceManager::GetInstance().LoadFont("Lingua.otf", 36)};
 
-	auto go = std::make_shared<dae::GameObject>();
-	go->SetTexture("background.tga");
-	scene.Add(go);
+	auto &scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	go = std::make_shared<dae::GameObject>();
-	go->SetTexture("logo.tga");
-	go->SetPosition(216, 180);
-	scene.Add(go);
+	scene.Add([](GameObject &gameObject) { gameObject.AddComponent<TextureComponent>("background.tga"); });
 
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to   = std::make_shared<dae::TextObject>("Programming 4 Assignment", font);
-	to->SetPosition(80, 20);
-	scene.Add(to);
+	scene.Add([](GameObject &gameObject) {
+		gameObject.AddComponent<TextureComponent>("logo.tga");
+		gameObject.SetPosition(216, 180);
+	});
+
+	scene.Add([=](GameObject &gameObject) {
+		gameObject.AddComponent<CounterComponent>(font);
+		gameObject.SetPosition(80, 20);
+	});
 }
 
 int main(int, char *[]) {

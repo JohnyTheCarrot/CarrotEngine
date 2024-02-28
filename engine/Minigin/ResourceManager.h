@@ -16,7 +16,7 @@ namespace dae {
 		void Init(const std::filesystem::path &data);
 
 		[[nodiscard]]
-		std::shared_ptr<Texture2D> LoadTexture(std::string_view fileName) const;
+		Texture2D LoadTexture(std::string_view fileName) const;
 
 		[[nodiscard]]
 		std::shared_ptr<Font> LoadFont(std::string_view fileName, unsigned int size) const;

@@ -99,6 +99,7 @@ void dae::Minigin::Run(const std::function<void()> &load) {
 
 #ifndef __EMSCRIPTEN__
 void dae::Minigin::RunOneFrame() {
+	// todo: proper loop
 	static auto start{std::chrono::system_clock::now()};
 	const auto  now{std::chrono::system_clock::now()};
 	const auto  diff{std::chrono::duration_cast<GameLoopTimeUnit>(now - start)};

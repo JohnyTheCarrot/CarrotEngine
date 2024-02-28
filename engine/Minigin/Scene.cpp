@@ -1,35 +1,31 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-#include <algorithm>
+#include <utility>
 
-using namespace dae;
+namespace dae {
+	unsigned int Scene::m_IdCounter = 0;
 
-unsigned int Scene::m_IdCounter = 0;
+	void Scene::RemoveAll() {
+		m_Objects.clear();
+	}
 
-Scene::Scene(const std::string &name)
-    : m_Name(name) {
-}
+	void Scene::Update() {
+		for (auto &object: m_Objects) { object.UpdateComponents(); }
+	}
 
-void Scene::Add(std::shared_ptr<GameObject> object) {
-	m_Objects.emplace_back(std::move(object));
-}
+	void Scene::FixedUpdate() {
+		for (auto &object: m_Objects) { object.FixedUpdateComponents(); }
+	}
 
-void Scene::Remove(const std::shared_ptr<GameObject> &object) {
-	m_Objects.erase(std::remove(m_Objects.begin(), m_Objects.end(), object), m_Objects.end());
-}
+	void Scene::Render() const {
+		for (const auto &object: m_Objects) { object.RenderComponents(); }
+	}
 
-void Scene::RemoveAll() {
-	m_Objects.clear();
-}
+	void Scene::Add(const std::function<void(GameObject &)> &setup) {
+		GameObject gameObject{};
+		setup(gameObject);
 
-void Scene::Update() {
-	for (auto &object: m_Objects) { object->Update(); }
-}
-
-void Scene::FixedUpdate() {
-}
-
-void Scene::Render() const {
-	for (const auto &object: m_Objects) { object->Render(); }
-}
+		m_Objects.emplace_back(std::move(gameObject));
+	}
+}// namespace dae
