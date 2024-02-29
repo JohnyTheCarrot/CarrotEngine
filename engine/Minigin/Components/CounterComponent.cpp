@@ -1,6 +1,7 @@
 #include "CounterComponent.h"
 #include "../Font.h"
 #include "../GameObject.h"
+#include "../GameTime.h"
 #include "TextComponent.h"
 
 namespace dae {
@@ -11,7 +12,16 @@ namespace dae {
 	}
 
 	void CounterComponent::OnUpdate() {
-		m_pTextComponent->SetText(std::to_string(m_Count));
+		static double fps{};
+		double        newFps{GameTime::GetInstance().GetCumAvgFps()};
+
+		if (fps == newFps)
+			return;
+
+		fps = newFps;
+
+		const auto fpsText{std::format("{:4.3f} FPS", fps)};
+		m_pTextComponent->SetText(fpsText);
 		++m_Count;
 	}
 

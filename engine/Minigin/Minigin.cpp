@@ -9,6 +9,7 @@
 
 #endif
 
+#include "GameTime.h"
 #include "InputManager.h"
 #include "Minigin.h"
 #include "Renderer.h"
@@ -99,20 +100,18 @@ void dae::Minigin::Run(const std::function<void()> &load) {
 
 #ifndef __EMSCRIPTEN__
 void dae::Minigin::RunOneFrame() {
-	// todo: proper loop
-	static auto start{std::chrono::system_clock::now()};
-	const auto  now{std::chrono::system_clock::now()};
-	const auto  diff{std::chrono::duration_cast<GameLoopTimeUnit>(now - start)};
+	GameTime &gameTime{GameTime::GetInstance()};
+	gameTime.EndDeltaTimeMeasurement();
+	gameTime.StartDeltaTimeMeasurement();
 
 	static GameLoopTimeUnit accumulator{0_t};
 
-	start = now;
-	accumulator += diff;
+	accumulator += gameTime.GetDeltaTime();
 
 	m_Quit = !InputManager::GetInstance().ProcessInput();
 
-	while (accumulator >= FIXED_TIME_DELTA) {
-		accumulator -= FIXED_TIME_DELTA;
+	while (accumulator >= GameTime::FIXED_TIME_DELTA) {
+		accumulator -= GameTime::FIXED_TIME_DELTA;
 		SceneManager::GetInstance().FixedUpdate();
 	}
 

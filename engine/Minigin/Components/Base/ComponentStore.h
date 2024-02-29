@@ -78,7 +78,7 @@ namespace dae {
 		}
 
 		void RenderComponents() const {
-			for (auto &pair: m_ComponentStore) { pair.second->Render(); }
+			for (const auto &pair: m_ComponentStore) { pair.second->Render(); }
 		}
 
 		explicit ComponentStore(NonOwningPtrMut<GameObject> pGameObject)
@@ -96,14 +96,14 @@ namespace dae {
 		ComponentStore(ComponentStore &&other) noexcept
 		    : m_ComponentStore{std::move(other.m_ComponentStore)}
 		    , m_pGameObject{other.m_pGameObject} {
-			for (auto &component: m_ComponentStore) { component.second->m_pGameObject = m_pGameObject; }
+			for (const auto &component: m_ComponentStore) { component.second->m_pGameObject = m_pGameObject; }
 			other.m_pGameObject = nullptr;
 		}
 
 		ComponentStore &operator=(ComponentStore &&other) noexcept {
 			m_ComponentStore = std::move(other.m_ComponentStore);
 			m_pGameObject    = other.m_pGameObject;
-			for (auto &component: m_ComponentStore) { component.second->m_pGameObject = m_pGameObject; }
+			for (const auto &component: m_ComponentStore) { component.second->m_pGameObject = m_pGameObject; }
 			other.m_pGameObject = nullptr;
 
 			return *this;
