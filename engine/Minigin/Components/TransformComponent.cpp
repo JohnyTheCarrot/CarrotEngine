@@ -13,11 +13,11 @@ namespace dae {
 	void TransformComponent::OnFixedUpdate() {
 	}
 
-	const glm::vec4 &TransformComponent::GetLocalPosition() noexcept {
+	const glm::vec2 &TransformComponent::GetLocalPosition() noexcept {
 		return *m_LocalPosition;
 	}
 
-	const glm::vec4 &TransformComponent::GetWorldPosition() noexcept {
+	const glm::vec2 &TransformComponent::GetWorldPosition() noexcept {
 		return *m_WorldPosition;
 	}
 
@@ -42,9 +42,8 @@ namespace dae {
 	}
 
 	void TransformComponent::SetLocalPosition(float x, float y) noexcept {
-		m_LocalPosition.SetFactory();
+		m_LocalPosition.InitFactory();
 		Translate(x, y);
-		m_WorldPosition.Update(m_LocalPosition);
 	}
 
 	void TransformComponent::Translate(float x, float y) noexcept {
@@ -64,15 +63,15 @@ namespace dae {
 	}
 
 	void TransformComponent::SetParentGameObjectPtr(NonOwningPtrMut<GameObject> goPtr) noexcept {
-		m_WorldPosition.SetFactory(goPtr);
+		m_WorldPosition.InitFactory(goPtr);
 	}
 
 	void TransformComponent::Scale(float scale) noexcept {
-		Scale(scale, scale, scale);
+		Scale(scale, scale);
 	}
 
-	void TransformComponent::Scale(float scaleX, float scaleY, float scaleZ) noexcept {
-		m_ScaleMatrix = glm::scale(glm::mat4{1.f}, glm::vec3{scaleX, scaleY, scaleZ});
+	void TransformComponent::Scale(float scaleX, float scaleY) noexcept {
+		m_ScaleMatrix = glm::scale(glm::mat4{1.f}, glm::vec3{scaleX, scaleY, 1.f});
 		m_LocalPosition.Update(m_TranslationMatrix, m_RotationMatrix, m_ScaleMatrix);
 		m_WorldPosition.Update(m_LocalPosition);
 	}
@@ -81,7 +80,7 @@ namespace dae {
 		return glm::vec2{m_ScaleMatrix * glm::vec4{1.f}};
 	}
 
-	glm::vec4 WorldPositionCalculator::operator()(LocalPosDirty &localPosition) {
+	glm::vec2 WorldPositionCalculator::operator()(LocalPosDirty &localPosition) {
 		if (m_pParentTransform == nullptr)
 			return *localPosition;
 

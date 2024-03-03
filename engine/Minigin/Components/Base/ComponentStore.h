@@ -105,6 +105,9 @@ namespace dae {
 		}
 
 		ComponentStore &operator=(ComponentStore &&other) noexcept {
+			if (&other == this)
+				return *this;
+
 			m_ComponentStore = std::move(other.m_ComponentStore);
 			m_pGameObject    = other.m_pGameObject;
 			for (const auto &component: m_ComponentStore) { component.second->m_pGameObject = m_pGameObject; }

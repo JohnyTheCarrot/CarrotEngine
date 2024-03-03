@@ -117,6 +117,8 @@ void dae::Minigin::RunOneFrame() {
 
 	SceneManager::GetInstance().Update();
 	Renderer::GetInstance().Render();
+
+	gameTime.Sleep();
 }
 #else
 void dae::Minigin::RunOneFrame() {

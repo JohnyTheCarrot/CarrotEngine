@@ -58,7 +58,7 @@ public:
 	template<
 	        class... TFactoryCtorArgs,
 	        typename = typename std::enable_if<std::is_constructible_v<TFactory, TFactoryCtorArgs &&...>>>
-	void SetFactory(TFactoryCtorArgs &&...args) {
+	void InitFactory(TFactoryCtorArgs &&...args) {
 		m_Factory    = TFactory{std::forward<TFactoryCtorArgs>(args)...};
 		m_ValueCache = std::nullopt;
 	}

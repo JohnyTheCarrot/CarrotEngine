@@ -21,10 +21,15 @@ namespace dae {
 
 		GameObject::Handle Add(const std::function<void(GameObject &)> &setup);
 
-		auto FindGameObject(GameObject::Handle handle) {
-			return std::find_if(m_Objects.begin(), m_Objects.end(), [handle](const GameObject &gameObject) {
+		NonOwningPtrMut<GameObject> FindGameObject(GameObject::Handle handle) {
+			const auto goIt{std::find_if(m_Objects.begin(), m_Objects.end(), [handle](const GameObject &gameObject) {
 				return gameObject.GetHandle() == handle;
-			});
+			})};
+
+			if (goIt == m_Objects.end())
+				return nullptr;
+
+			return &*goIt;
 		}
 
 		void RemoveAll();

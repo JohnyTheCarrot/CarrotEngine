@@ -16,7 +16,8 @@ namespace dae {
 
 	class GameObject final : public ComponentStore<Component> {
 	public:
-		using Handle = int;
+		using Handle   = int;
+		using Children = std::vector<NonOwningPtrMut<GameObject>>;
 
 		GameObject()
 		    : ComponentStore<Component>{this} {
@@ -30,9 +31,9 @@ namespace dae {
 
 		GameObject &operator=(GameObject &&other) noexcept;
 
-		void SetParent(Handle parentHandle) noexcept;
+		void SetParent(GameObject::Handle parentHandle);
 
-		void SetParent(NonOwningPtrMut<GameObject> pParent) noexcept;
+		void SetParent(NonOwningPtrMut<GameObject> pParent, bool keepWorldPosition = true);
 
 		[[nodiscard]]
 		NonOwningPtrMut<GameObject> GetParentPtr() const noexcept;
@@ -40,10 +41,15 @@ namespace dae {
 		[[nodiscard]]
 		Handle GetHandle() const noexcept;
 
+		[[nodiscard]]
+		const Children &GetChildren() const noexcept;
+
 	private:
-		std::vector<NonOwningPtrMut<GameObject>> m_Children{};
-		NonOwningPtrMut<GameObject>              m_pParent{};
-		Handle                                   m_Handle;
+		void MoveHelper(GameObject &&other) noexcept;
+
+		Children                    m_Children{};
+		NonOwningPtrMut<GameObject> m_pParent{};
+		Handle                      m_Handle;
 	};
 }// namespace dae
 

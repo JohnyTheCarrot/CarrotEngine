@@ -1,17 +1,17 @@
-#include "CounterComponent.h"
+#include "FpsComponent.h"
 #include "../Font.h"
 #include "../GameObject.h"
 #include "../GameTime.h"
 #include "TextComponent.h"
 
 namespace dae {
-	CounterComponent::CounterComponent(Component::Parent pParent, SharedOwningPtr<Font> pFont)
+	FpsComponent::FpsComponent(Component::Parent pParent, SharedOwningPtr<Font> pFont)
 	    : Component{pParent}
 	    , m_pFont{std::move(pFont)}
-	    , m_pTextComponent{AddComponent<TextComponent>(m_pFont, "text")} {
+	    , m_pTextComponent{AddComponent<TextComponent>(m_pFont, "FPS")} {
 	}
 
-	void CounterComponent::OnUpdate() {
+	void FpsComponent::OnUpdate() {
 		static double fps{};
 		double        newFps{GameTime::GetInstance().GetFps()};
 
@@ -24,9 +24,9 @@ namespace dae {
 		m_pTextComponent->SetText(std::move(fpsText));
 	}
 
-	void CounterComponent::OnFixedUpdate() {
+	void FpsComponent::OnFixedUpdate() {
 	}
 
-	void CounterComponent::OnRender() {
+	void FpsComponent::OnRender() {
 	}
 }// namespace dae

@@ -1,5 +1,5 @@
-#ifndef COUNTERCOMPONENT_H
-#define COUNTERCOMPONENT_H
+#ifndef FPSCOMPONENT_H
+#define FPSCOMPONENT_H
 
 #include "../Util/PointerAliases.h"
 #include "Base/Component.h"
@@ -10,12 +10,12 @@ namespace dae {
 
 	class TextComponent;
 
-	class CounterComponent final : public Component {
+	class FpsComponent final : public Component {
 		SharedOwningPtr<Font>          m_pFont;
 		NonOwningPtrMut<TextComponent> m_pTextComponent{};
 
 	public:
-		CounterComponent(Component::Parent pParent, SharedOwningPtr<Font> pFont);
+		FpsComponent(Component::Parent pParent, SharedOwningPtr<Font> pFont);
 
 		void OnUpdate() override;
 
@@ -26,4 +26,4 @@ namespace dae {
 
 }// namespace dae
 
-#endif//COUNTERCOMPONENT_H
+#endif//FPSCOMPONENT_H

@@ -17,7 +17,9 @@ namespace dae {
 
 	public:
 		static constexpr GameTimeDurationPrecision FIXED_TIME_DELTA{(10_t).count()};
-
+		static constexpr std::chrono::duration     TIME_PER_FRAME{
+                std::chrono::duration<GameTimeDurationPrecision, std::ratio<1>>{1} / 144.f
+        };
 		void StartDeltaTimeMeasurement();
 
 		void EndDeltaTimeMeasurement();
@@ -28,12 +30,14 @@ namespace dae {
 		[[nodiscard]]
 		double GetFps() const noexcept;
 
+		void Sleep();
+
 		GameTime() {
 			StartDeltaTimeMeasurement();
 		}
 
 	private:
-		std::chrono::time_point<std::chrono::system_clock> m_Start{};
+		std::chrono::time_point<std::chrono::high_resolution_clock> m_Start{};
 
 		GameLoopTimeUnit m_DeltaTime{};
 		GameLoopTimeUnit m_FpsTimeProgress{};

@@ -7,8 +7,7 @@
 #endif
 #endif
 
-#include "Components/BoingComponent.h"
-#include "Components/CounterComponent.h"
+#include "Components/FpsComponent.h"
 #include "Components/RotatorComponent.h"
 #include "Components/TextComponent.h"
 #include "Components/TextureComponent.h"
@@ -40,7 +39,7 @@ void load() {
 
 	scene.Add([=](GameObject &gameObject) {
 		gameObject.AddComponent<TransformComponent>(80.f, 20.f);
-		gameObject.AddComponent<CounterComponent>(font);
+		gameObject.AddComponent<FpsComponent>(font);
 	});
 
 	GameObject::Handle centerPog{scene.Add([=](GameObject &gameObject) {
@@ -50,12 +49,11 @@ void load() {
 
 	GameObject::Handle lastPog{centerPog};
 
-	for (int num{0}; num < 5; ++num) {
+	for (int num{0}; num < 25; ++num) {
 		lastPog = scene.Add([=](GameObject &gameObject) {
-			gameObject.AddComponent<TransformComponent>(0.f, 50.f);
-			gameObject.AddComponent<TextureComponent>("egg_cat.gif");
-			gameObject.AddComponent<RotatorComponent>(50.f * static_cast<float>(num + 1));
-			//			gameObject.AddComponent<BoingComponent>(1.f);
+			gameObject.AddComponent<TransformComponent>(500.f, 0.f)->Scale(0.1f);
+			gameObject.AddComponent<TextureComponent>("cat_stare.jpg");
+			gameObject.AddComponent<RotatorComponent>(static_cast<float>(num) * 25.f);
 			gameObject.SetParent(lastPog);
 		});
 	}
