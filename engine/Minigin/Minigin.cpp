@@ -104,7 +104,7 @@ void dae::Minigin::RunOneFrame() {
 	gameTime.EndDeltaTimeMeasurement();
 	gameTime.StartDeltaTimeMeasurement();
 
-	static GameLoopTimeUnit accumulator{0_t};
+	static GameTimeDurationPrecision accumulator{0};
 
 	accumulator += gameTime.GetDeltaTime();
 

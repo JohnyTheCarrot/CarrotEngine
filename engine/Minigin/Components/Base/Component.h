@@ -35,7 +35,7 @@ namespace dae {
 			OnFixedUpdate();
 		}
 
-		void Render() const {
+		void Render() {
 			RenderComponents();
 
 			OnRender();
@@ -46,7 +46,7 @@ namespace dae {
 
 		virtual void OnFixedUpdate() = 0;
 
-		virtual void OnRender() const = 0;
+		virtual void OnRender() = 0;
 	};
 }// namespace dae
 

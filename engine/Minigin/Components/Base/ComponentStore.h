@@ -33,6 +33,10 @@ namespace dae {
 		        std::enable_if_t<std::is_constructible_v<TComponent, NonOwningPtrMut<GameObject>, Args &&...>, bool> =
 		                true>
 		NonOwningPtrMut<TComponent> AddComponent(Args &&...args) {
+			if (const auto existingComponent{GetComponent<TComponent>()}; existingComponent != nullptr) {
+				return existingComponent;
+			}
+
 			auto pComponent{std::make_unique<TComponent>(m_pGameObject, std::forward<Args>(args)...)};
 
 			auto result{pComponent.get()};

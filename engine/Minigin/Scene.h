@@ -5,6 +5,8 @@
 #include <functional>
 
 namespace dae {
+	using GameObjectHandle = int;
+
 	class Scene final {
 		std::string             m_Name;
 		std::vector<GameObject> m_Objects{};
@@ -17,7 +19,13 @@ namespace dae {
 		    : m_Name{std::forward<TStr>(name)} {
 		}
 
-		void Add(const std::function<void(GameObject &)> &setup);
+		GameObject::Handle Add(const std::function<void(GameObject &)> &setup);
+
+		auto FindGameObject(GameObject::Handle handle) {
+			return std::find_if(m_Objects.begin(), m_Objects.end(), [handle](const GameObject &gameObject) {
+				return gameObject.GetHandle() == handle;
+			});
+		}
 
 		void RemoveAll();
 

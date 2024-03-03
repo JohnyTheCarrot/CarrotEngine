@@ -7,9 +7,12 @@
 #endif
 #endif
 
+#include "Components/BoingComponent.h"
 #include "Components/CounterComponent.h"
+#include "Components/RotatorComponent.h"
 #include "Components/TextComponent.h"
 #include "Components/TextureComponent.h"
+#include "Components/TransformComponent.h"
 #include "Minigin.h"
 #include "ResourceManager.h"
 #include "Scene.h"
@@ -25,17 +28,37 @@ void load() {
 
 	auto &scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	scene.Add([](GameObject &gameObject) { gameObject.AddComponent<TextureComponent>("background.tga"); });
-
 	scene.Add([](GameObject &gameObject) {
-		gameObject.AddComponent<TextureComponent>("logo.tga");
-		gameObject.SetPosition(216, 180);
+		gameObject.AddComponent<TransformComponent>(0.f, 0.f);
+		gameObject.AddComponent<TextureComponent>("background.tga");
 	});
+
+	//	scene.Add([](GameObject &gameObject) {
+	//		gameObject.AddComponent<TransformComponent>(216.f, 180.f);
+	//		gameObject.AddComponent<TextureComponent>("logo.tga");
+	//	});
 
 	scene.Add([=](GameObject &gameObject) {
+		gameObject.AddComponent<TransformComponent>(80.f, 20.f);
 		gameObject.AddComponent<CounterComponent>(font);
-		gameObject.SetPosition(80, 20);
 	});
+
+	GameObject::Handle centerPog{scene.Add([=](GameObject &gameObject) {
+		gameObject.AddComponent<TransformComponent>(216.f, 180.f);
+		gameObject.AddComponent<TextComponent>(font, "pog");
+	})};
+
+	GameObject::Handle lastPog{centerPog};
+
+	for (int num{0}; num < 5; ++num) {
+		lastPog = scene.Add([=](GameObject &gameObject) {
+			gameObject.AddComponent<TransformComponent>(0.f, 50.f);
+			gameObject.AddComponent<TextureComponent>("egg_cat.gif");
+			gameObject.AddComponent<RotatorComponent>(50.f * static_cast<float>(num + 1));
+			//			gameObject.AddComponent<BoingComponent>(1.f);
+			gameObject.SetParent(lastPog);
+		});
+	}
 }
 
 int main(int, char *[]) {

@@ -20,11 +20,11 @@ namespace dae {
 		}
 	}
 
-	GameLoopTimeUnit GameTime::GetDeltaTime() const noexcept {
-		return m_DeltaTime;
+	GameTimeDurationPrecision GameTime::GetDeltaTime() const noexcept {
+		return m_DeltaTime.count();
 	}
 
-	double GameTime::GetCumAvgFps() const noexcept {
+	double GameTime::GetFps() const noexcept {
 		return m_Fps;
 	}
 }// namespace dae

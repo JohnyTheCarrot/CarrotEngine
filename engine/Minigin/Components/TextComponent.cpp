@@ -1,11 +1,32 @@
 #include "TextComponent.h"
+#include "../Font.h"
 #include "../GameObject.h"
 #include "../Renderer.h"
 #include "SDL_ttf.h"
+#include "TransformComponent.h"
 #include <stdexcept>
 
 namespace dae {
-	Texture2D CreateTextTexture(const SharedOwningPtr<Font> &m_pFont, std::string_view text) {
+	TextComponent::TextComponent(Component::Parent pParent, const SharedOwningPtr<Font> &pFont, const std::string &text)
+	    : Component{pParent}
+	    , m_Texture{pFont.get(), text}
+	    , m_pFont{pFont}
+	    , m_pTransformComponent{pParent->GetComponent<TransformComponent>()} {
+		if (m_pTransformComponent == nullptr)
+			throw std::runtime_error("GameObject is missing a transform");
+	}
+
+	void TextComponent::OnRender() {
+		Renderer::GetInstance().RenderTexture(*m_Texture, *m_pTransformComponent);
+	}
+
+	void TextComponent::OnUpdate() {
+	}
+
+	void TextComponent::OnFixedUpdate() {
+	}
+
+	Texture2D FontTextureUpdater::operator()(NonOwningPtr<Font> m_pFont, std::string_view text) {
 		const SDL_Color color{255, 255, 255, 255};
 		const auto      surface{TTF_RenderText_Blended(m_pFont->GetFont(), text.data(), color)};
 		if (surface == nullptr) {
@@ -21,26 +42,5 @@ namespace dae {
 		}
 
 		return Texture2D{texture};
-	}
-
-	TextComponent::TextComponent(Component::Parent pParent, const SharedOwningPtr<Font> &pFont, std::string_view text)
-	    : Component{pParent}
-	    , m_pFont{pFont}
-	    , m_Texture{CreateTextTexture(pFont, text)} {
-	}
-
-	void TextComponent::OnRender() const {
-		const auto &pos{GetGameObject()->m_Transform.GetPosition()};
-		Renderer::GetInstance().RenderTexture(m_Texture, pos.x, pos.y);
-	}
-
-	void TextComponent::OnUpdate() {
-	}
-
-	void TextComponent::OnFixedUpdate() {
-	}
-
-	void TextComponent::SetText(std::string_view text) {
-		m_Texture = CreateTextTexture(m_pFont, text);
 	}
 }// namespace dae

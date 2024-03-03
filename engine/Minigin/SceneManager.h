@@ -22,12 +22,15 @@ namespace dae {
 
 		void Render();
 
+		Scene &GetCurrentScene() noexcept;
+
 	private:
 		friend class Singleton<SceneManager>;
 
 		SceneManager() = default;
 
-		std::vector<Scene> m_Scenes;
+		size_t             m_CurrentSceneIdx{};
+		std::vector<Scene> m_Scenes{};
 	};
 }// namespace dae
 

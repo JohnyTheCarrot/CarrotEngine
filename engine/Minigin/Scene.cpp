@@ -22,10 +22,10 @@ namespace dae {
 		for (const auto &object: m_Objects) { object.RenderComponents(); }
 	}
 
-	void Scene::Add(const std::function<void(GameObject &)> &setup) {
+	GameObject::Handle Scene::Add(const std::function<void(GameObject &)> &setup) {
 		GameObject gameObject{};
 		setup(gameObject);
 
-		m_Objects.emplace_back(std::move(gameObject));
+		return m_Objects.emplace_back(std::move(gameObject)).GetHandle();
 	}
 }// namespace dae

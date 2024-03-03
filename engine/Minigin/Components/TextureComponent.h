@@ -9,18 +9,20 @@
 namespace dae {
 
 	class GameObject;
+	class TransformComponent;
 
 	class TextureComponent final : public Component {
-		Texture2D m_Texture;
+		Texture2D                           m_Texture;
+		NonOwningPtrMut<TransformComponent> m_pTransformComponent;
 
 	public:
-		void OnRender() const override;
+		void OnRender() override;
 
 		void OnUpdate() override;
 
 		void OnFixedUpdate() override;
 
-		TextureComponent(Component::Parent parent, std::string_view fileName);
+		TextureComponent(Component::Parent pParent, std::string_view fileName);
 
 		TextureComponent(Component::Parent pParent, Texture2D &&texture);
 

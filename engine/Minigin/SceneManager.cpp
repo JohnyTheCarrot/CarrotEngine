@@ -12,4 +12,8 @@ namespace dae {
 	void SceneManager::Render() {
 		for (const auto &scene: m_Scenes) { scene.Render(); }
 	}
+
+	Scene &SceneManager::GetCurrentScene() noexcept {
+		return m_Scenes[m_CurrentSceneIdx];
+	}
 }// namespace dae

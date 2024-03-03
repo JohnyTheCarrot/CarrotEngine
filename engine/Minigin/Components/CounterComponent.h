@@ -11,7 +11,6 @@ namespace dae {
 	class TextComponent;
 
 	class CounterComponent final : public Component {
-		int                            m_Count{};
 		SharedOwningPtr<Font>          m_pFont;
 		NonOwningPtrMut<TextComponent> m_pTextComponent{};
 
@@ -22,7 +21,7 @@ namespace dae {
 
 		void OnFixedUpdate() override;
 
-		void OnRender() const override;
+		void OnRender() override;
 	};
 
 }// namespace dae

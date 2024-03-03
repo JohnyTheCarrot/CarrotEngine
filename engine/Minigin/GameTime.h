@@ -6,7 +6,8 @@
 
 namespace dae {
 	constexpr size_t DURATION_FRACTION{1};
-	using GameLoopTimeUnit = std::chrono::duration<double, std::ratio<1, DURATION_FRACTION>>;
+	using GameTimeDurationPrecision = float;
+	using GameLoopTimeUnit = std::chrono::duration<GameTimeDurationPrecision, std::ratio<1, DURATION_FRACTION>>;
 
 	constexpr GameLoopTimeUnit operator""_t(unsigned long long time) {
 		return GameLoopTimeUnit{time};
@@ -15,17 +16,17 @@ namespace dae {
 	class GameTime final : public Singleton<GameTime> {
 
 	public:
-		static constexpr GameLoopTimeUnit FIXED_TIME_DELTA{10_t};
+		static constexpr GameTimeDurationPrecision FIXED_TIME_DELTA{(10_t).count()};
 
 		void StartDeltaTimeMeasurement();
 
 		void EndDeltaTimeMeasurement();
 
 		[[nodiscard]]
-		GameLoopTimeUnit GetDeltaTime() const noexcept;
+		GameTimeDurationPrecision GetDeltaTime() const noexcept;
 
 		[[nodiscard]]
-		double GetCumAvgFps() const noexcept;
+		double GetFps() const noexcept;
 
 		GameTime() {
 			StartDeltaTimeMeasurement();

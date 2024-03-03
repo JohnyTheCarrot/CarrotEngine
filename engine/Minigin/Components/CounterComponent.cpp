@@ -13,21 +13,20 @@ namespace dae {
 
 	void CounterComponent::OnUpdate() {
 		static double fps{};
-		double        newFps{GameTime::GetInstance().GetCumAvgFps()};
+		double        newFps{GameTime::GetInstance().GetFps()};
 
 		if (fps == newFps)
 			return;
 
 		fps = newFps;
 
-		const auto fpsText{std::format("{:4.3f} FPS", fps)};
-		m_pTextComponent->SetText(fpsText);
-		++m_Count;
+		auto fpsText{std::format("{:4.3f} FPS", fps)};
+		m_pTextComponent->SetText(std::move(fpsText));
 	}
 
 	void CounterComponent::OnFixedUpdate() {
 	}
 
-	void CounterComponent::OnRender() const {
+	void CounterComponent::OnRender() {
 	}
 }// namespace dae
