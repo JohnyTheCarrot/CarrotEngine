@@ -2,6 +2,8 @@
 #include "Components/TransformComponent.h"
 #include "SceneManager.h"
 #include "Texture2D.h"
+#include "imgui/imgui_impl_sdl2.h"
+#include "imgui/imgui_impl_sdlrenderer2.h"
 #include <cstring>
 #include <stdexcept>
 
@@ -23,6 +25,10 @@ void dae::Renderer::Init(SDL_Window *window) {
 	if (m_Renderer == nullptr) {
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplSDL2_InitForSDLRenderer(window, m_Renderer);
+	ImGui_ImplSDLRenderer2_Init(m_Renderer);
 }
 
 void dae::Renderer::Render() const {
@@ -30,12 +36,24 @@ void dae::Renderer::Render() const {
 	SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_Renderer);
 
+
+	ImGui_ImplSDLRenderer2_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
 	SceneManager::GetInstance().Render();
+
+	ImGui::Render();
+	ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_RenderPresent(m_Renderer);
 }
 
 void dae::Renderer::Destroy() {
+	ImGui_ImplSDLRenderer2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	if (m_Renderer != nullptr) {
 		SDL_DestroyRenderer(m_Renderer);
 		m_Renderer = nullptr;

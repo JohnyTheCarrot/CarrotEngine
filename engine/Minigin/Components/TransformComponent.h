@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 
 namespace dae {
-
 	class TransformComponent;
 
 	class LocalPositionCalculator final {
@@ -59,7 +58,7 @@ namespace dae {
 		[[nodiscard]]
 		const glm::vec2 &GetWorldPosition() noexcept;
 
-		template<std::same_as<glm::vec2> TVec2>
+		template<typename TVec2>
 		void SetLocalPosition(TVec2 &&vec2) {
 			m_LocalPosition.InitFactory();
 			Translate(std::forward<TVec2>(vec2));
@@ -67,7 +66,7 @@ namespace dae {
 
 		void SetLocalPosition(float x, float y) noexcept;
 
-		template<std::same_as<glm::vec2> TVec2>
+		template<typename TVec2>
 		void Translate(TVec2 &&vec2) noexcept {
 			m_TranslationMatrix = glm::translate(m_TranslationMatrix, glm::vec3{std::forward<TVec2>(vec2), 0.f});
 			m_WorldPosition.Update(m_LocalPosition);

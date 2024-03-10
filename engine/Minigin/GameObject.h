@@ -45,6 +45,9 @@ namespace dae {
 		const Children &GetChildren() const noexcept;
 
 	private:
+		[[nodiscard]]
+		bool HasAsChildRecursively(NonOwningPtr<GameObject> pChildToFind);
+
 		void MoveHelper(GameObject &&other) noexcept;
 
 		Children                    m_Children{};

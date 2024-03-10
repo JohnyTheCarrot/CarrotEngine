@@ -45,25 +45,27 @@ namespace dae {
 	}
 
 	void GameObject::SetParent(NonOwningPtrMut<GameObject> pParent, bool keepWorldPosition) {
-		if (pParent == m_pParent)
+		if (pParent == m_pParent || HasAsChildRecursively(pParent))
 			return;
 
 		if (m_pParent != nullptr)
-			std::erase_if(m_pParent->m_Children, [this](auto childPtr) { return childPtr == this; });
+			std::erase(m_pParent->m_Children, this);
 
 		m_pParent = pParent;
 		const auto transCompPtr{GetComponent<TransformComponent>()};
 		if (transCompPtr) {
 			transCompPtr->SetParentGameObjectPtr(pParent);
 
-			if (keepWorldPosition && pParent != nullptr) {
+			if (pParent != nullptr) {
 				const auto parentTransCompPtr{pParent->GetComponent<TransformComponent>()};
 				if (parentTransCompPtr == nullptr)
 					throw std::runtime_error{"SetParent: parent has no transform!"};
 
-				transCompPtr->SetLocalPosition(
-				        parentTransCompPtr->GetWorldPosition() - transCompPtr->GetWorldPosition()
-				);
+				glm::vec2 newLocal{parentTransCompPtr->GetWorldPosition()};
+				if (keepWorldPosition)
+					newLocal -= transCompPtr->GetWorldPosition();
+
+				transCompPtr->SetLocalPosition(newLocal);
 			}
 		}
 
@@ -92,5 +94,15 @@ namespace dae {
 
 	const GameObject::Children &GameObject::GetChildren() const noexcept {
 		return m_Children;
+	}
+
+	bool GameObject::HasAsChildRecursively(NonOwningPtr<GameObject> pChildToFind) {
+		if (pChildToFind == this)
+			return true;
+
+		return std::find_if(
+		               pChildToFind->m_Children.cbegin(), pChildToFind->m_Children.cend(),
+		               [pChildToFind](auto pChild) { return pChild->HasAsChildRecursively(pChildToFind); }
+		       ) != pChildToFind->m_Children.cend();
 	}
 }// namespace dae

@@ -14,9 +14,14 @@ else ()
 endif ()
 
 file(GLOB_RECURSE SOURCE engine/*.cpp)
+file(GLOB_RECURSE IMGUI_SOURCE 3rdParty/imgui/*.cpp)
 
 # list source files here
 add_executable(${TARGET_NAME} ${TARGET_PARAM} ${SOURCE})
+
+add_library(ImGui ${IMGUI_SOURCE})
+
+target_link_libraries(${TARGET_NAME} PRIVATE ImGui)
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
@@ -115,10 +120,24 @@ if (WIN32)
             ${VLD_INCLUDE_DIR}
             ${SDL2_INCLUDE_DIR}
             ${SDL2_IMAGE_INCLUDE_DIR}
-            ${SDL2_TTF_INCLUDE_DIR})
+            ${SDL2_TTF_INCLUDE_DIR}
+            3rdParty
+    )
+    target_include_directories(ImGui PRIVATE
+            ${VLD_INCLUDE_DIR}
+            ${SDL2_INCLUDE_DIR}
+            ${SDL2_IMAGE_INCLUDE_DIR}
+            ${SDL2_TTF_INCLUDE_DIR}
+    )
 
     # set libraries to link with
     target_link_libraries(${TARGET_NAME} PUBLIC
+            ${SDL2_LIBRARIES}
+            ${SDL2_IMAGE_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES}
+            ${VLD_LIBRARY}
+    )
+    target_link_libraries(ImGui PUBLIC
             ${SDL2_LIBRARIES}
             ${SDL2_IMAGE_LIBRARIES}
             ${SDL2_TTF_LIBRARIES}

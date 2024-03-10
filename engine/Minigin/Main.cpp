@@ -12,6 +12,7 @@
 #include "Components/TextComponent.h"
 #include "Components/TextureComponent.h"
 #include "Components/TransformComponent.h"
+#include "Components/TrashTheCache.h"
 #include "Minigin.h"
 #include "ResourceManager.h"
 #include "Scene.h"
@@ -21,6 +22,21 @@
 
 namespace fs = std::filesystem;
 using namespace dae;
+
+class IntTrashTheCache {
+public:
+	IntTrashTheCache()
+	    : m_Vec(1'000'000) {
+		for (auto &val: m_Vec) val = 13;
+	}
+
+	void operator()(int stepSize) {
+		for (int i{0}; i < m_Vec.size(); i += stepSize) { m_Vec[i] *= 2; }
+	}
+
+private:
+	std::vector<int> m_Vec;
+};
 
 void load() {
 	auto font{ResourceManager::GetInstance().LoadFont("Lingua.otf", 36)};
@@ -32,31 +48,14 @@ void load() {
 		gameObject.AddComponent<TextureComponent>("background.tga");
 	});
 
-	//	scene.Add([](GameObject &gameObject) {
-	//		gameObject.AddComponent<TransformComponent>(216.f, 180.f);
-	//		gameObject.AddComponent<TextureComponent>("logo.tga");
-	//	});
-
 	scene.Add([=](GameObject &gameObject) {
 		gameObject.AddComponent<TransformComponent>(80.f, 20.f);
 		gameObject.AddComponent<FpsComponent>(font);
 	});
 
-	GameObject::Handle centerPog{scene.Add([=](GameObject &gameObject) {
-		gameObject.AddComponent<TransformComponent>(216.f, 180.f);
-		gameObject.AddComponent<TextComponent>(font, "pog");
-	})};
-
-	GameObject::Handle lastPog{centerPog};
-
-	for (int num{0}; num < 25; ++num) {
-		lastPog = scene.Add([=](GameObject &gameObject) {
-			gameObject.AddComponent<TransformComponent>(500.f, 0.f)->Scale(0.1f);
-			gameObject.AddComponent<TextureComponent>("cat_stare.jpg");
-			gameObject.AddComponent<RotatorComponent>(static_cast<float>(num) * 25.f);
-			gameObject.SetParent(lastPog);
-		});
-	}
+	scene.Add([=](GameObject &gameObject) {
+		gameObject.AddComponent<TrashTheCache>(IntTrashTheCache(), "Exercise one");
+	});
 }
 
 int main(int, char *[]) {
