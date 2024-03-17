@@ -12,7 +12,6 @@
 #include "Components/TextComponent.h"
 #include "Components/TextureComponent.h"
 #include "Components/TransformComponent.h"
-#include "Components/TrashTheCache.h"
 #include "Minigin.h"
 #include "ResourceManager.h"
 #include "Scene.h"
@@ -22,21 +21,6 @@
 
 namespace fs = std::filesystem;
 using namespace dae;
-
-class IntTrashTheCache {
-public:
-	IntTrashTheCache()
-	    : m_Vec(1'000'000) {
-		for (auto &val: m_Vec) val = 13;
-	}
-
-	void operator()(int stepSize) {
-		for (int i{0}; i < m_Vec.size(); i += stepSize) { m_Vec[i] *= 2; }
-	}
-
-private:
-	std::vector<int> m_Vec;
-};
 
 void load() {
 	auto font{ResourceManager::GetInstance().LoadFont("Lingua.otf", 36)};
@@ -51,10 +35,6 @@ void load() {
 	scene.Add([=](GameObject &gameObject) {
 		gameObject.AddComponent<TransformComponent>(80.f, 20.f);
 		gameObject.AddComponent<FpsComponent>(font);
-	});
-
-	scene.Add([=](GameObject &gameObject) {
-		gameObject.AddComponent<TrashTheCache>(IntTrashTheCache(), "Exercise one");
 	});
 }
 
