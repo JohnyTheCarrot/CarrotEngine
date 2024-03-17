@@ -19,9 +19,11 @@ file(GLOB_RECURSE IMGUI_SOURCE 3rdParty/imgui/*.cpp)
 # list source files here
 add_executable(${TARGET_NAME} ${TARGET_PARAM} ${SOURCE})
 
+target_include_directories(${TARGET_NAME} PRIVATE engine/Minigin)
+
 add_library(ImGui ${IMGUI_SOURCE})
 
-target_link_libraries(${TARGET_NAME} PRIVATE ImGui)
+target_link_libraries(${TARGET_NAME} PRIVATE ImGui xinput.lib)
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)

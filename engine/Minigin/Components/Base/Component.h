@@ -1,7 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include "../../Util/PointerAliases.h"
+#include "Util/PointerAliases.h"
 #include "ComponentStore.h"
 #include <vector>
 

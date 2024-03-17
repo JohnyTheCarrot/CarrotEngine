@@ -1,7 +1,7 @@
 #include "FpsComponent.h"
-#include "../Font.h"
-#include "../GameObject.h"
-#include "../GameTime.h"
+#include "Font.h"
+#include "GameObject.h"
+#include "GameTime.h"
 #include "TextComponent.h"
 
 namespace dae {

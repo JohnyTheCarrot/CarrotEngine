@@ -1,7 +1,7 @@
 #include "TextComponent.h"
-#include "../Font.h"
-#include "../GameObject.h"
-#include "../Renderer.h"
+#include "Font.h"
+#include "GameObject.h"
+#include "Renderer.h"
 #include "SDL_ttf.h"
 #include "TransformComponent.h"
 #include <stdexcept>
@@ -17,7 +17,9 @@ namespace dae {
 	}
 
 	void TextComponent::OnRender() {
-		Renderer::GetInstance().RenderTexture(*m_Texture, *m_pTransformComponent);
+		Renderer::GetInstance().RenderTexture(
+		        *m_Texture, m_pTransformComponent->GetWorldPosition().x, m_pTransformComponent->GetWorldPosition().y
+		);
 	}
 
 	void TextComponent::OnUpdate() {

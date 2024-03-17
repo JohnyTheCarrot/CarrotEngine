@@ -1,8 +1,8 @@
 #ifndef FPSCOMPONENT_H
 #define FPSCOMPONENT_H
 
-#include "../Util/PointerAliases.h"
 #include "Base/Component.h"
+#include "Util/PointerAliases.h"
 
 namespace dae {
 

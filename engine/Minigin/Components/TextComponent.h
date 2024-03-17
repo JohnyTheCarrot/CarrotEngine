@@ -1,10 +1,10 @@
 #ifndef TEXTCOMPONENT_H
 #define TEXTCOMPONENT_H
 
-#include "../Texture2D.h"
-#include "../Util/PointerAliases.h"
 #include "Base/Component.h"
 #include "Base/PossiblyDirty.h"
+#include "Texture2D.h"
+#include "Util/PointerAliases.h"
 #include <string>
 
 namespace dae {

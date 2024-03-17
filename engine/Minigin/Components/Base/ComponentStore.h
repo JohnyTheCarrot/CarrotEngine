@@ -1,7 +1,7 @@
 #ifndef COMPONENTSTORE_H
 #define COMPONENTSTORE_H
 
-#include "../../Util/PointerAliases.h"
+#include "Util/PointerAliases.h"
 #include <algorithm>
 #include <string_view>
 #include <unordered_map>

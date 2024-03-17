@@ -1,6 +1,6 @@
 #include "TransformComponent.h"
-#include "../GameObject.h"
-#include "../GameTime.h"
+#include "GameObject.h"
+#include "GameTime.h"
 #include <glm/ext/matrix_transform.hpp>
 
 namespace dae {
@@ -29,14 +29,14 @@ namespace dae {
 
 	TransformComponent::TransformComponent(Component::Parent pGameObject)
 	    : Component{pGameObject}
-	    , m_LocalPosition{LocalPositionCalculator{}, glm::mat4{1.f}, glm::mat4{1.f}, glm::mat4{1.f}}
+	    , m_LocalPosition{LocalPositionCalculator{}, glm::mat4{1.f}, glm::mat4{1.f}}
 	    , m_WorldPosition{WorldPositionCalculator{pGameObject->GetParentPtr()}, m_LocalPosition}
 	    , m_TranslationMatrix{glm::mat4{1.f}} {
 	}
 
 	TransformComponent::TransformComponent(Component::Parent pParent, float x, float y)
 	    : Component{pParent}
-	    , m_LocalPosition{LocalPositionCalculator{}, glm::translate(glm::mat4{1.f}, glm::vec3{x, y, 0.f}), glm::mat4{1.f}, glm::mat4{1.f}}
+	    , m_LocalPosition{LocalPositionCalculator{}, glm::translate(glm::mat4{1.f}, glm::vec3{x, y, 0.f}), glm::mat4{1.f}}
 	    , m_WorldPosition{WorldPositionCalculator{pParent->GetParentPtr()}, m_LocalPosition}
 	    , m_TranslationMatrix{glm::translate(glm::mat4{1.f}, glm::vec3{x, y, 0.f})} {
 	}
@@ -48,6 +48,7 @@ namespace dae {
 
 	void TransformComponent::Translate(float x, float y) noexcept {
 		m_TranslationMatrix = glm::translate(m_TranslationMatrix, glm::vec3{x, y, 0.f});
+		m_LocalPosition.Update(m_TranslationMatrix, m_RotationMatrix);
 		m_WorldPosition.Update(m_LocalPosition);
 	}
 
@@ -58,26 +59,12 @@ namespace dae {
 			return;
 
 		m_RotationMatrix = glm::rotate(m_RotationMatrix, actualRotation, glm::vec3{0.f, 0.f, 1.f});
-		m_LocalPosition.Update(m_TranslationMatrix, m_RotationMatrix, m_ScaleMatrix);
+		m_LocalPosition.Update(m_TranslationMatrix, m_RotationMatrix);
 		m_WorldPosition.Update(m_LocalPosition);
 	}
 
 	void TransformComponent::SetParentGameObjectPtr(NonOwningPtrMut<GameObject> goPtr) noexcept {
 		m_WorldPosition.InitFactory(goPtr);
-	}
-
-	void TransformComponent::Scale(float scale) noexcept {
-		Scale(scale, scale);
-	}
-
-	void TransformComponent::Scale(float scaleX, float scaleY) noexcept {
-		m_ScaleMatrix = glm::scale(glm::mat4{1.f}, glm::vec3{scaleX, scaleY, 1.f});
-		m_LocalPosition.Update(m_TranslationMatrix, m_RotationMatrix, m_ScaleMatrix);
-		m_WorldPosition.Update(m_LocalPosition);
-	}
-
-	glm::vec2 TransformComponent::GetScale() const noexcept {
-		return glm::vec2{m_ScaleMatrix * glm::vec4{1.f}};
 	}
 
 	glm::vec2 WorldPositionCalculator::operator()(LocalPosDirty &localPosition) {
@@ -93,7 +80,7 @@ namespace dae {
 	      } {
 	}
 
-	glm::vec4 LocalPositionCalculator::operator()(glm::mat4 transMat, glm::mat4 rotMat, glm::mat4 scaleMat) {
-		return (scaleMat * rotMat * transMat) * m_LocalPosition;
+	glm::vec4 LocalPositionCalculator::operator()(glm::mat4 transMat, glm::mat4 rotMat) {
+		return (rotMat * transMat) * m_LocalPosition;
 	}
 }// namespace dae

@@ -11,7 +11,7 @@ namespace dae {
 
 	class LocalPositionCalculator final {
 	public:
-		glm::vec4 operator()(glm::mat4 transMat, glm::mat4 rotMat, glm::mat4 scaleMat);
+		glm::vec4 operator()(glm::mat4 transMat, glm::mat4 rotMat);
 
 		LocalPositionCalculator()
 		    : m_LocalPosition{0.f, 0.f, 0.f, 1.f} {
@@ -21,7 +21,7 @@ namespace dae {
 		glm::vec4 m_LocalPosition{};
 	};
 
-	using LocalPosDirty = PossiblyDirty<LocalPositionCalculator, glm::vec2, glm::mat4, glm::mat4, glm::mat4>;
+	using LocalPosDirty = PossiblyDirty<LocalPositionCalculator, glm::vec2, glm::mat4, glm::mat4>;
 
 	class WorldPositionCalculator final {
 	public:
@@ -37,7 +37,7 @@ namespace dae {
 		LocalPosDirty                                                      m_LocalPosition;
 		PossiblyDirty<WorldPositionCalculator, glm::vec2, LocalPosDirty &> m_WorldPosition;
 
-		glm::mat4 m_TranslationMatrix{1.f}, m_RotationMatrix{1.f}, m_ScaleMatrix{1.f};
+		glm::mat4 m_TranslationMatrix{1.f}, m_RotationMatrix{1.f};
 
 	public:
 		explicit TransformComponent(Component::Parent pGameObject);
@@ -75,13 +75,6 @@ namespace dae {
 		void Translate(float x, float y) noexcept;
 
 		void Rotate(float z) noexcept;
-
-		[[nodiscard]]
-		glm::vec2 GetScale() const noexcept;
-
-		void Scale(float scaleX, float scaleY) noexcept;
-
-		void Scale(float scale) noexcept;
 
 		void SetParentGameObjectPtr(NonOwningPtrMut<GameObject> goPtr) noexcept;
 	};

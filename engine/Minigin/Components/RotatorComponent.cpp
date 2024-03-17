@@ -1,5 +1,5 @@
 #include "RotatorComponent.h"
-#include "../GameObject.h"
+#include "GameObject.h"
 #include "TransformComponent.h"
 
 namespace dae {

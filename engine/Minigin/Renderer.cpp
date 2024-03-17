@@ -80,16 +80,3 @@ void dae::Renderer::RenderTexture(const Texture2D &texture, float x, float y, fl
 SDL_Renderer *dae::Renderer::GetSDLRenderer() const {
 	return m_Renderer;
 }
-
-void dae::Renderer::RenderTexture(const Texture2D &texture, TransformComponent &transform) const {
-	const auto  scale{transform.GetScale()};
-	const auto &pos{transform.GetWorldPosition()};
-
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(pos.x);
-	dst.y = static_cast<int>(pos.y);
-	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	dst.w = static_cast<int>(static_cast<float>(dst.w) * scale.x);
-	dst.h = static_cast<int>(static_cast<float>(dst.h) * scale.y);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
-}
